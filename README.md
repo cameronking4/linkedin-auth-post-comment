@@ -1,49 +1,76 @@
-# linkedin-oauth-helper
-This is a helper script to handle LinkedIn OAuth. For a detailed, step-by-step guide, please refer to this [article I wrote](https://www.azaytek.com/how-to-publish-to-linkedin-via-api/).
-If you found this repository useful, please consider giving it a star ⭐ on GitHub. This helps to promote the project and show your support.
+# LinkedIn API Integration
 
-## How it works
-The script check if there's a valid access token in a local json file. If it exists, it uses it to do an API call to get the corresponding user ID. If the API call is successful, it prints both: the user access token & ID &. If it fails, it starts the OAuth process by executing the following steps:
-- It builds the authorization url 
-- It launches the default user's browser and redirect it to the previously built authorization url to handle the authorization process.  
-- The user will have to log in &/or proceed by allowing access.
-- Once user proceeds, the script will handle the callback where authorization code is sent (using a minimalist express server). 
-- Once the script gets the authorization code, it uses it to do 2 API requests: get an access token and the corresponding user ID.
-Once finished, it saves the access token to a local file, and prints the result to the browser & the console.
+This repository contains a set of scripts that interact with the LinkedIn API for various purposes, including OAuth authentication, posting comments, and sharing articles.
 
-## Requirements
-Before using this script, make sure to copy the ```env.example``` file to ```.env```.
-Once you've done that, you need to create a LinkedIn app and get the client id and secret, and then update the ```.env``` file with these variables.
-You can do it here: https://www.linkedin.com/developer/apps
+## Project Structure
 
-Note: please make sure to have the same ```REDIRECT_URI``` value configured in both LinkedIn app's page and this script
+- **index.js**: Handles OAuth authentication with LinkedIn and retrieves an access token.
+- **API.js**: Provides utility functions for interacting with LinkedIn's OAuth and user information APIs.
+- **comment.js**: Posts a comment on a LinkedIn post.
+- **post.js**: Shares an article on LinkedIn.
 
+## Prerequisites
+
+Before running any of the scripts, ensure you have the following:
+
+1. Node.js installed on your machine.
+2. A LinkedIn Developer account to create an app and get your API credentials.
+3. A `.env` file in the root directory with the following variables set:
+```bash
+   LINKEDIN_CLIENT_ID=your_client_id
+   LINKEDIN_CLIENT_SECRET=your_client_secret
+   LINKEDIN_AUTHORIZATION_URL=https://www.linkedin.com/oauth/v2/authorization
+   LINKEDIN_ACCESS_TOKEN_URL=https://www.linkedin.com/oauth/v2/accessToken
+   LINKEDIN_REDIRECT_URI=http://localhost:{__PORT__}/callback
+   ACCESS_TOKEN_FILEPATH=path_to_your_access_token_file
+   LINKEDIN_ACCESS_TOKEN=your_linkedIn_access_token # Required for comment.js and post.js
+```
 ## Installation
-
-Execute the following command to install the required dependencies:
-``` npm install ```
-
-## Usage
-Simply execute the following command:
-``` node index.js ```
-
-## Output
-Once the script is finished, you should see the following output:
-### Console:
-
+```bash
+git clone https://github.com/your-username/linkedin-api-integration.git
+cd linkedin-api-integration
 ```
-{
-linkedInId: '***.....',
-linkedInAccessToken: '*************************.....'
-}
+```
+pnpm i
+pnpm dev
 ```
 
-### Browser:
+## Running the Scripts to leverage Linkedin API
+
+### 1. OAuth Authentication (index.js)
+
+To start the OAuth flow and retrieve a LinkedIn access token:
+
+```bash  
+node index.js
 ```
-Your can now close this window. :-)
-linkedInId	linkedInAccessToken
-***.....  	*************************.....
+
+This will open a browser window for you to authenticate with LinkedIn. After successful authentication, your access token will be saved to the file specified by `ACCESS_TOKEN_FILEPATH` in your `.env` file.
+
+### 2. Posting a Comment (comment.js)
+
+To post a comment on a LinkedIn post:
+
+1. Ensure the `LINKEDIN_ACCESS_TOKEN` is set in your `.env` file.
+2. Update the `commentText` and `postUrn` variables in `comment.js`.
+3. Run the script:
+
+```bash  
+node comment.js
 ```
-## Customization:
-- You can customize the redirect url in the ```.env``` file
-- You can customize the file where the access token is saved in the ```.env``` file
+### 3. Posting to Linkedin Feed (post.js)
+
+To make a post on LinkedIn:
+
+1. Ensure the `LINKEDIN_ACCESS_TOKEN` is set in your `.env` file.
+2. Update the `articleContent` and `articleUrl` variables in `post.js`.
+3. Run the script:
+
+```bash  
+node post.js
+```
+### Notes
+
+- Ensure that the LinkedIn access token is valid before running the `comment.js` or `post.js` scripts.
+- The `index.js` script automatically checks for an existing valid access token before starting the OAuth flow.
+
