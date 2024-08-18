@@ -64,6 +64,7 @@ async function handleCallback(req, res) {
             }
         }
         const linkedInId = await API.getLinkedinId(linkedInAccessToken);
+        console.log(linkedInId);
         const result = {linkedInId, linkedInAccessToken};
         console.log(result);
         const htmlResult = `<html><head><style>td {border: 1px solid;}</style></head><div>Your can now close this window. :-) <br><table><tr><td>linkedInId</td><td>linkedInAccessToken</td></tr><tr><td>${result.linkedInId}</td><td>${result.linkedInAccessToken}</td></tr></table></div>`;
