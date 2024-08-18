@@ -29,10 +29,12 @@ Before running any of the scripts, ensure you have the following:
 ```bash
 git clone https://github.com/your-username/linkedin-api-integration.git
 cd linkedin-api-integration
-```
-```
 pnpm i
-pnpm dev
+```
+```
+node index.js 
+node post.js 
+node comment.js
 ```
 
 ## Running the Scripts to leverage Linkedin API
@@ -73,4 +75,4 @@ node post.js
 
 - Ensure that the LinkedIn access token is valid before running the `comment.js` or `post.js` scripts.
 - The `index.js` script automatically checks for an existing valid access token before starting the OAuth flow.
-
+- Future development could include GitHub Actions and Open AI for automated posting
